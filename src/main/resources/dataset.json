@@ -1,0 +1,112 @@
+[
+ {
+  "Source": "silchar",
+  "Destination": "badarpur",
+  "Cost": 8
+ },
+ {
+  "Source": "badarpur",
+  "Destination": "goalpara",
+  "Cost": 5
+ },
+ {
+  "Source": "guwahati",
+  "Destination": "jagiroad",
+  "Cost": 4
+ },
+ {
+  "Source": "jorhat",
+  "Destination": "mongoldoi",
+  "Cost": 4
+ },
+ {
+  "Source": "dibrugarh",
+  "Destination": "azara",
+  "Cost": 6
+ },
+ {
+  "Source": "saparmukh",
+  "Destination": "badarpur",
+  "Cost": 1
+ },
+ {
+  "Source": "goalpara",
+  "Destination": "guwahati",
+  "Cost": 5
+ },
+ {
+  "Source": "jagiroad",
+  "Destination": "jorhat",
+  "Cost": 7
+ },
+ {
+  "Source": "mongoldoi",
+  "Destination": "dibrugarh",
+  "Cost": 1
+ },
+ {
+  "Source": "azara",
+  "Destination": "saparmukh",
+  "Cost": 1
+ },
+ {
+  "Source": "kamakhya",
+  "Destination": "goalpara",
+  "Cost": 3
+ },
+ {
+  "Source": "silchar",
+  "Destination": "jagiroad",
+  "Cost": 5
+ },
+ {
+  "Source": "badarpur",
+  "Destination": "mongoldoi",
+  "Cost": 8
+ },
+ {
+  "Source": "guwahati",
+  "Destination": "azara",
+  "Cost": 5
+ },
+ {
+  "Source": "jorhat",
+  "Destination": "kamakhya",
+  "Cost": 2
+ },
+ {
+  "Source": "dibrugarh",
+  "Destination": "silchar",
+  "Cost": 9
+ },
+ {
+  "Source": "saparmukh",
+  "Destination": "badarpur",
+  "Cost": 2
+ },
+ {
+  "Source": "goalpara",
+  "Destination": "guwahati",
+  "Cost": 4
+ },
+ {
+  "Source": "jagiroad",
+  "Destination": "jorhat",
+  "Cost": 3
+ },
+ {
+  "Source": "mongoldoi",
+  "Destination": "dibrugarh",
+  "Cost": 3
+ },
+ {
+  "Source": "azara",
+  "Destination": "jagiroad",
+  "Cost": 7
+ },
+ {
+  "Source": "kamakhya",
+  "Destination": "mongoldoi",
+  "Cost": 6
+ }
+]

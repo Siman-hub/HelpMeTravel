@@ -6,6 +6,7 @@ import com.example.helpMeTravel.services.OptimizedRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class OptimizedRouteController
     @Autowired
     private GraphBuilder graphBuilder;
 
-    @GetMapping("/getRoute")
+    @PostMapping("/getRoute")
     public OptimizedRouteEntity getOptimizedRoute(@RequestParam String destination, String source) throws IOException {
         return optimizedRouteService.getOptimizedRoute(destination,source);
     }

@@ -15,7 +15,10 @@ public class OptimizedRouteService
     @Autowired
     private GraphBuilder graphBuilder;
 
-    public OptimizedRouteEntity getOptimizedRoute(String destination, String source) throws IOException {
+    public OptimizedRouteEntity getOptimizedRoute(String des, String sou) throws IOException {
+
+        String destination = des.toLowerCase();
+        String source = sou.toLowerCase();
 
         OptimizedRouteEntity optimizedRoute = new OptimizedRouteEntity();
 

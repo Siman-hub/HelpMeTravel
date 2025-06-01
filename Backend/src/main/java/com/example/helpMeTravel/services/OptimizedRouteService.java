@@ -63,7 +63,6 @@ public class OptimizedRouteService
 
         List<String> path = new ArrayList<>();
 
-        System.out.println();
 
         if(distances.get(destination) == Integer.MAX_VALUE)
         {

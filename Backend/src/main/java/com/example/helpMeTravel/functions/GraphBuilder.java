@@ -1,9 +1,8 @@
-package com.example.helpMeTravel.fucntions;
+package com.example.helpMeTravel.functions;
 
 import com.example.helpMeTravel.Entities.LocationObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

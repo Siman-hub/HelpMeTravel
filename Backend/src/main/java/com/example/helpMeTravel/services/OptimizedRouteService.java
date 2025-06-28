@@ -1,110 +1,120 @@
 package com.example.helpMeTravel.services;
 
 import com.example.helpMeTravel.Entities.OptimizedRouteEntity;
+import com.example.helpMeTravel.Entities.RouteState;
+import com.example.helpMeTravel.Entities.StationEntity;
+import com.example.helpMeTravel.Entities.TrainEdge;
 import com.example.helpMeTravel.functions.GraphBuilder;
+import com.example.helpMeTravel.functions.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
-public class OptimizedRouteService
-{
+public class OptimizedRouteService {
+
     @Autowired
     private GraphBuilder graphBuilder;
 
-    public OptimizedRouteEntity getOptimizedRoute(String des, String sou) throws IOException {
+    public OptimizedRouteEntity getOptimizedRoute(String des, String sou, String dayOfweek) throws IOException {
 
-        String destination = des.toLowerCase();
-        String source = sou.toLowerCase();
+        String destination = des.toUpperCase();
+        String source = sou.toUpperCase();
+
+        PriorityQueue<RouteState> queue = new PriorityQueue<>(
+                Comparator.comparingInt(RouteState::getTotalCost)
+        );
+
+        Set<StationEntity> visited = new HashSet<>();
+
+        DayOfWeek startDay = DayOfWeek.valueOf(dayOfweek.toUpperCase());
+        StationEntity startStation = new StationEntity(source, startDay, LocalTime.MIN);
+        RouteState initialRouteState = new RouteState(startStation, 0);
 
         OptimizedRouteEntity optimizedRoute = new OptimizedRouteEntity();
 
-        Map<String, Map<String,Integer>> graph = graphBuilder.buildGraph();
+        Map<String, List<TrainEdge>> graph = graphBuilder.buildGraph(dayOfweek);
 
-        Map<String, Integer> distances = new HashMap<>();
-        Map<String, String> previousNodes = new HashMap<>();
-        Set<String> visited = new HashSet<>();
-        PriorityQueue<Node> queue = new PriorityQueue<>(
-                Comparator.comparingInt(node -> node.distance));
+        Map<StationEntity, Integer> costs = new HashMap<>();
+        Map<StationEntity, StationEntity> previousNodes = new HashMap<>();
 
-        for (String node : graph.keySet()) {
-            distances.put(node, Integer.MAX_VALUE);
-        }
-        distances.put(source, 0);
-        queue.add(new Node(source, 0));
+        costs.put(startStation, 0);
+        queue.add(initialRouteState);
 
-        while(!queue.isEmpty())
-        {
-            Node current = queue.poll();
+        StationEntity finalStation = null;
 
-            if(current.name.equals(destination)) break;
+        while (!queue.isEmpty()) {
+            RouteState currentState = queue.poll();
+            StationEntity currentStation = currentState.getCurrentStation();
 
-            if(visited.contains(current.name)) continue;
-            else visited.add(current.name);
+            if (visited.contains(currentStation)) continue;
+            visited.add(currentStation);
 
-            Map<String,Integer> neighbors = graph.getOrDefault(current.name,Collections.emptyMap());
+            if (currentStation.getLocation().equals(destination)) {
+                finalStation = currentStation;
+                break;
+            }
 
-            for(Map.Entry<String,Integer> neighbor : neighbors.entrySet())
-            {
-                String nextNode = neighbor.getKey();
+            List<TrainEdge> neighbors = graph.getOrDefault(currentStation.getLocation(), Collections.emptyList());
 
-                int newDistance = distances.get(current.name) + neighbor.getValue();
+            for (TrainEdge train : neighbors) {
+                for (DayOfWeek trainDay : train.getDayOfOperation()) {
 
-                if(newDistance < distances.getOrDefault(nextNode,Integer.MAX_VALUE)) {
-                    distances.put(nextNode,newDistance);
-                    previousNodes.put(nextNode,current.name);
-                    queue.add(new Node(nextNode, newDistance));
+                    // Skip if train is not on the same or next day
+                    if (!trainDay.equals(currentStation.getArrivalDay()) &&
+                            !trainDay.equals(currentStation.getArrivalDay().plus(1))) {
+                        continue;
+                    }
+
+                    if (!TimeUtil.canCatch(
+                            currentStation.getArrivalDay(),
+                            currentStation.getArrivalTime(),
+                            trainDay,
+                            train.getDepartureTime())) {
+                        continue;
+                    }
+
+                    StationEntity nextStation = new StationEntity(
+                            train.getDestination(),
+                            trainDay,
+                            train.getArrivalTime()
+                    );
+
+                    int newCost = currentState.getTotalCost() + train.getPrice();
+
+                    if (newCost < costs.getOrDefault(nextStation, Integer.MAX_VALUE)) {
+                        costs.put(nextStation, newCost);
+                        previousNodes.put(nextStation, currentStation);
+                        queue.add(new RouteState(nextStation, newCost));
+                    }
                 }
             }
         }
 
-        List<String> path = new ArrayList<>();
-
-
-        if(distances.get(destination) == Integer.MAX_VALUE)
-        {
+        if (finalStation == null || costs.get(finalStation) == null) {
             optimizedRoute.setPrize(Integer.MAX_VALUE);
             optimizedRoute.setRoute(new ArrayList<>());
             return optimizedRoute;
         }
 
-        Stack<String> currentLocation = new Stack<>();
+        // Reconstruct path
+        List<StationEntity> path = new ArrayList<>();
+        StationEntity curr = finalStation;
 
-        int cost = distances.get(destination);
-
-        currentLocation.add(destination);
-
-        while(!currentLocation.peek().equals(source))
-        {
-            String currLoc = currentLocation.pop();
-            currentLocation.add(previousNodes.get(currLoc));
-            path.add(currLoc);
+        while (curr != null) {
+            path.add(curr);
+            curr = previousNodes.get(curr);
         }
-
-
-
-        path.add(source);
 
         Collections.reverse(path);
 
         optimizedRoute.setRoute(path);
-        optimizedRoute.setPrize(cost);
+        optimizedRoute.setPrize(costs.get(finalStation));
 
         return optimizedRoute;
-
-    }
-
-    private static class Node {
-        String name;
-        int distance;
-
-        Node(String name, int distance) {
-            this.name = name;
-            this.distance = distance;
-        }
     }
 }
-
-

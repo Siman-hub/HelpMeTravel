@@ -5,10 +5,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document(collection = "reviews")
+
 public class Review
 {
-    @Id
+
     private Long id;
     private String content;
     private Instant createdAt;

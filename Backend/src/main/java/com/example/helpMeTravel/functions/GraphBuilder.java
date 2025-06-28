@@ -1,52 +1,48 @@
 package com.example.helpMeTravel.functions;
 
-import com.example.helpMeTravel.Entities.LocationObject;
+import com.example.helpMeTravel.Entities.TrainEdge;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.DayOfWeek;
+import java.util.*;
 
 @Service
-public class GraphBuilder
-{
-    public Map<String,Map<String,Integer>>  buildGraph() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<LocationObject>> tr = new TypeReference<List<LocationObject>>() {};
-        InputStream inputStream = TypeReference
-                .class
-                .getResourceAsStream("/dataset.json");
+public class GraphBuilder {
 
-        if(inputStream == null) System.out.println(-1);
+    @Autowired
+    private ObjectMapper mapper;
 
-        List<LocationObject> locationObjects = mapper.readValue(inputStream,tr);
+    public Map<String, List<TrainEdge>> buildGraph(String dayOfWeek) throws IOException {
 
-        for(LocationObject ll : locationObjects)
-        {
-            System.out.println(ll.toString());
+        // 1. Load train edges from JSON
+
+        TypeReference<List<TrainEdge>> typeRef = new TypeReference<>() {};
+        InputStream inputStream = TypeReference.class.getResourceAsStream("/dataset.json");
+
+        if (inputStream == null) {
+            throw new IOException("dataset.json not found in resources folder");
         }
 
-        Map<String,Map<String,Integer>> graph = new HashMap<>();
+        List<TrainEdge> trainEdges = mapper.readValue(inputStream, typeRef);
 
-        for(LocationObject ll : locationObjects)
-        {
-            if(graph.get(ll.getSource()) == null) {
-//                graph.put(ll.getSource(),new HashMap<>(){{put(ll.getDestination(),Integer.parseInt(ll.getCost()));}});
-                graph.put(ll.getSource(), new HashMap<>());
+        //------------Filter trainEdges by dayOfWeek and next day-------------------------
+
+        DayOfWeek current = DayOfWeek.valueOf(dayOfWeek.toUpperCase());
+        DayOfWeek next = current.plus(1);
+
+        Map<String, List<TrainEdge>> graph = new HashMap<>();
+
+        for (TrainEdge edge : trainEdges) {
+            if (edge.getDayOfOperation().contains(current) || edge.getDayOfOperation().contains(next)) {
+                graph.computeIfAbsent(edge.getSource(), k -> new ArrayList<>()).add(edge);
             }
-            graph.get(ll.getSource()).put(ll.getDestination(),Integer.parseInt(ll.getCost()));
         }
 
         return graph;
     }
-
-
-
-//    public GraphBuilder() throws IOException {
-//
-//    }
 }

@@ -19,8 +19,8 @@ public class OptimizedRouteController
     private GraphBuilder graphBuilder;
 
     @PostMapping("/getRoute")
-    public OptimizedRouteEntity getOptimizedRoute(@RequestParam String destination, String source) throws IOException {
-        return optimizedRouteService.getOptimizedRoute(destination,source);
+    public OptimizedRouteEntity getOptimizedRoute(@RequestParam String destination, String source, String dayOfWeek) throws IOException {
+        return optimizedRouteService.getOptimizedRoute(destination,source,dayOfWeek);
     }
 
 //    @GetMapping("/")

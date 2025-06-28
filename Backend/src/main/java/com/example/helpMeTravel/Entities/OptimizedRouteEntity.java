@@ -5,7 +5,7 @@ import java.util.List;
 
 public class OptimizedRouteEntity
 {
-    private List<String> route;
+    private List<StationEntity> route;
     private Integer prize;
 
     public Integer getPrize() {
@@ -16,11 +16,11 @@ public class OptimizedRouteEntity
         this.prize = prize;
     }
 
-    public List<String> getRoute() {
+    public List<StationEntity> getRoute() {
         return route;
     }
 
-    public void setRoute(List<String> route) {
+    public void setRoute(List<StationEntity> route) {
         this.route = route;
     }
 

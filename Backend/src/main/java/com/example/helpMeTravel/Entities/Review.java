@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-
 public class Review
 {
 
@@ -54,6 +53,5 @@ public class Review
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
-
 
 }

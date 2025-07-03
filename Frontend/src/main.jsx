@@ -12,7 +12,7 @@ import Layout from './Layout.jsx';
 import Home from './Components/Home/Home.jsx';
 import AuthPage from './Components/Login/Login.jsx';
 import Reviews from './Components/Reviews/reviews.jsx';
-import { UserProvider } from  './Context/userContext.jsx'
+import { UserProvider } from './Context/UserContext.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(

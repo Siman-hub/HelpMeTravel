@@ -14,3 +14,7 @@ public class JacksonConfig {
         return mapper;
     }
 }
+
+//ObjectMapper is Jackson’s main class for converting Java objects to/from JSON
+//JavaTimeModule adds support for Java 8+ date/time types like LocalDate, LocalDateTime, etc.
+//This configuration file is to add addtional instructions to the already existing ObjectMapper class of Jackson

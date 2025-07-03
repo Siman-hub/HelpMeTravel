@@ -17,6 +17,18 @@ import java.util.*;
 @Service
 public class OptimizedRouteService {
 
+    // In our use case of Dijkstra, one station (node) can have multiple states
+    // depending on the arrival time.
+
+    // Imagine it like this the state here is StationEntity (station name + arrival time)
+    // And the route state is StationEnity + the cost.
+    // If the node was just an integer (instead of being a complex object), the route entity would turn into
+    // an array of two integers [currNodeState, price]. In case of a very simple Graph without any constraints
+    // the currNodeState will be currNode,
+    // So in simple words out RouteState is kind of an array with the nodeState and the price.
+
+
+
     @Autowired
     private GraphBuilder graphBuilder;
 

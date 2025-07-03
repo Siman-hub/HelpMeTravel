@@ -21,6 +21,10 @@ public class GraphBuilder {
 
         // 1. Load train edges from JSON
 
+        // creating a TypeReference that holds the generic type info for List<TrainEdge>
+        // Jackson (and Java reflection in general) erases generic type info at runtime —
+        // which means List<TrainEdge> just becomes List<?>
+
         TypeReference<List<TrainEdge>> typeRef = new TypeReference<>() {};
         InputStream inputStream = TypeReference.class.getResourceAsStream("/dataset.json");
 
@@ -46,3 +50,4 @@ public class GraphBuilder {
         return graph;
     }
 }
+

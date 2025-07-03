@@ -17,6 +17,7 @@ public class SaveReviewController {
     @Autowired
     private ReviewRepository reviewRepository;
 
+
     @PostMapping("/saveReview/{locationId}")
     public LocationReviewEntity saveReview(@PathVariable String locationId, @RequestBody Review review)
     {
@@ -35,6 +36,14 @@ public class SaveReviewController {
         locationReviewEntity.getReviews().add(review);
 
         return reviewRepository.save(locationReviewEntity);
+    }
+
+    @GetMapping("/getReviewByLocation/{locationId}")
+    public LocationReviewEntity getReviewByLocation(@PathVariable String locationId){
+        Optional<LocationReviewEntity> location = reviewRepository.findById(locationId);
+
+        return location.orElseGet(LocationReviewEntity::new);
+
     }
 
 

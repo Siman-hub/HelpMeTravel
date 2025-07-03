@@ -68,5 +68,15 @@
   "price": 400,
   "arrivalTime": "23:59",
   "departureTime": "21:00"
+ },
+ {
+  "trainPNR": "D3",
+  "trainName": "Late Runner",
+  "source": "D",
+  "destination": "A",
+  "dayOfOperation": ["TUESDAY"],
+  "price": 400,
+  "arrivalTime": "03:00",
+  "departureTime": "12:00"
  }
 ]

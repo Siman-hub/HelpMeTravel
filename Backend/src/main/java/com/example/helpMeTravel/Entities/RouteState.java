@@ -25,3 +25,6 @@ public class RouteState {
         this.totalCost = totalCost;
     }
 }
+
+
+// [source, arrival time, price]

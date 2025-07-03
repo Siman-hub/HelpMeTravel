@@ -4,6 +4,9 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class TimeUtil {
+
+    //This canCatch() function compares two Day-Time pairs to determine if the former is less than the later
+
     public static boolean canCatch(DayOfWeek arrivalDay, LocalTime arrivalTime,
                                    DayOfWeek departureDay, LocalTime departureTime) {
         if (departureDay.getValue() > arrivalDay.getValue()) {
@@ -20,3 +23,5 @@ public class TimeUtil {
         return t1.compareTo(t2);
     }
 }
+
+// This class is a utility class for designing various custom comparators.

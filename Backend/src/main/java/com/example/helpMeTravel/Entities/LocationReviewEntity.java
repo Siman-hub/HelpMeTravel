@@ -21,6 +21,9 @@ public class LocationReviewEntity
         this.numberOfReviews = numberOfReviews;
     }
 
+    public LocationReviewEntity() {
+    }
+
     public String getName() {
         return name;
     }

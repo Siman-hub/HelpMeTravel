@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { auth } from "../Components/Firebase/Firebase"; // ✅ Correct path
+import { auth } from "../Components/Firebase/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 const UserContext = createContext();

@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,10 +40,12 @@ public class SaveReviewController {
     }
 
     @GetMapping("/getReviewByLocation/{locationId}")
-    public LocationReviewEntity getReviewByLocation(@PathVariable String locationId){
+    public List<Review> getReviewByLocation(@PathVariable String locationId){
         Optional<LocationReviewEntity> location = reviewRepository.findById(locationId);
 
-        return location.orElseGet(LocationReviewEntity::new);
+        if(location.isEmpty()) return new ArrayList<>();
+
+        return location.get().getReviews();
 
     }
 
